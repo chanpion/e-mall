@@ -6,14 +6,14 @@ import java.util.Date;
 
 /**
  * @author April Chen
- * @date 2020/3/16 17:11
+ * @date 2020/3/16 19:58
  */
 @Data
-public class User {
+public class Permission {
     private Long id;
-    private String username;
-    private String password;
-    private String email;
+    private String name;
+    private String description;
+    private Long parentId;
     private Date createTime;
     private Date updateTime;
 }
