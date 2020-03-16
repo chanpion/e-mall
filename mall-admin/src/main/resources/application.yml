@@ -4,3 +4,17 @@ server:
 spring:
   application:
     name: e-mall-admin
+  datasource:
+    driver-class-name: org.h2.Driver
+    schema: classpath:db/schema-h2.sql
+    data: classpath:db/data-h2.sql
+    url: jdbc:h2:~/test
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+
+mybatis:
+  type-aliases-package: com.chanpion.boot.entity
+  mapper-locations: classpath:mybatis/mappers/*.xml
