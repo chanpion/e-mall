@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.servlet.Filter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -58,13 +59,21 @@ public class ShiroConfig {
         return authorizationAttributeSourceAdvisor;
     }
 
+    @Bean
     public ShiroFilterFactoryBean shiroFilterFactoryBean() {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager());
         shiroFilterFactoryBean.setLoginUrl("/login");
         shiroFilterFactoryBean.setSuccessUrl("/");
 
-        Map<String, String> filterChainDefinitionMap = new HashMap<>();
+        // 添加自己的过滤器并且取名为jwt
+        Map<String, Filter> filterMap = new HashMap<>();
+        filterMap.put("jwt", new JwtFilter());
+        shiroFilterFactoryBean.setFilters(filterMap);
+
+        Map<String, String> filterChainDefinitionMap = new HashMap<>(16);
+        // 所有的请求通过我们自己的JWT filter
+        filterChainDefinitionMap.put("/**", "jwt");
         ResourceBundle bundle = ResourceBundle.getBundle("shiro-filter");
         bundle.keySet().forEach(k -> filterChainDefinitionMap.put(k, bundle.getString(k)));
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
