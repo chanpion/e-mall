@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="60">
+    <properties>
+        <property name="log.path" >D:/logs/emall</property>
+        <property name="log.file" >emall</property>
+        <property name="log.format">[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%p] [%t] [%X{logId}] [%c{1.}(%L)] : %msg%n</property>
+    </properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <!--<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %l - %msg%n" />-->
+            <PatternLayout pattern="${log.format}" />
+        </Console>
+
+        <RollingRandomAccessFile name="RollingRandomAccessFile" fileName="${log.path}/${log.file}.log"
+                                 filePattern="${log.path}/$${date:yyyy-MM}/${log.file}-%d{yyyy-MM-dd HH-mm}-%i.log">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %l - %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="false"/>
+                <CronTriggeringPolicy schedule="0 0 0 * * ?"/>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy>
+                <Delete basePath="${log.path}" maxDepth="2">
+                    <IfFileName glob="*/app-*.log.gz" />
+                    <IfLastModified age="7d" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingRandomAccessFile>
+    </Appenders>
+
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="Console" />
+        </Root>
+
+        <AsyncLogger name="com.chanpion" level="trace" additivity="true">
+            <AppenderRef ref="RollingRandomAccessFile"/>
+        </AsyncLogger>
+    </Loggers>
+</Configuration>

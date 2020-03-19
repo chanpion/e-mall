@@ -16,5 +16,5 @@ spring:
       enabled: true
 
 mybatis:
-  type-aliases-package: com.chanpion.boot.entity
+  type-aliases-package: com.chanpion.mall.admin.entity
   mapper-locations: classpath:mybatis/mappers/*.xml

@@ -12,5 +12,18 @@ import java.util.List;
 @Repository
 public interface MenuDAO {
 
+    /**
+     * 获取全部菜单
+     *
+     * @return
+     */
     List<Menu> findAll();
+
+    /**
+     * 根据父菜单id查询
+     *
+     * @param pid
+     * @return
+     */
+    List<Menu> findByPid(long pid);
 }
