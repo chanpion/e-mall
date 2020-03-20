@@ -8,4 +8,8 @@
         FROM  user
         WHERE username=#{username}
     </select>
+
+    <select id="findAll" resultType="user">
+        SELECT * FROM user
+    </select>
 </mapper>

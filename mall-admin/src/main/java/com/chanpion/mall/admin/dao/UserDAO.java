@@ -1,8 +1,9 @@
 package com.chanpion.mall.admin.dao;
 
 import com.chanpion.mall.admin.entity.User;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author April Chen
@@ -10,5 +11,27 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserDAO {
-    User findByName(@Param("username") String username);
+
+    /**
+     * 插入一条用户记录
+     *
+     * @param user 用户
+     * @return 保持的用户
+     */
+    User insert(User user);
+
+    /**
+     * findByName
+     *
+     * @param username 用户名
+     * @return 用户
+     */
+    User findByUsername(String username);
+
+    /**
+     * 查询所有用户
+     *
+     * @return 用户列表
+     */
+    List<User> findAll();
 }

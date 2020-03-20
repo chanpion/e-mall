@@ -26,7 +26,7 @@ public class AuthRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         String username = (String) principalCollection.getPrimaryPrincipal();
-        User user = userDAO.findByName(username);
+        User user = userDAO.findByUsername(username);
         //todo  find roles and permissions
         return authorizationInfo;
     }
@@ -34,7 +34,7 @@ public class AuthRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         String username = (String) authenticationToken.getPrincipal();
-        User user = userDAO.findByName(username);
+        User user = userDAO.findByUsername(username);
         if (user == null) {
             return null;
         }

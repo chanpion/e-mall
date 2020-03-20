@@ -2,6 +2,7 @@ package com.chanpion.mall.admin.entity;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -14,6 +15,6 @@ public class User {
     private String username;
     private String password;
     private String email;
-    private Date createTime;
-    private Date updateTime;
+    private LocalDateTime createTime;
+    private LocalDateTime updateTime;
 }
