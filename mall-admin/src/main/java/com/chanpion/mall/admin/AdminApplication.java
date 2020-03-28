@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * @author April Chen
  */
-@MapperScan("com.chanpion.mall.admin")
+@MapperScan("com.chanpion.mall.admin.dao")
 @SpringBootApplication
 public class AdminApplication {
 

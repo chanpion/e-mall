@@ -25,7 +25,7 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
     @Override
     protected boolean isLoginAttempt(ServletRequest request, ServletResponse response) {
         HttpServletRequest req = (HttpServletRequest) request;
-        String token = req.getHeader("Token");
+        String token = req.getHeader(JwtUtil.JWT_TOKEN_HEADER);
         return token != null;
     }
 
@@ -35,7 +35,7 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
     @Override
     protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        String token = httpServletRequest.getHeader("Token");
+        String token = httpServletRequest.getHeader(JwtUtil.JWT_TOKEN_HEADER);
         JwtToken jwtToken = new JwtToken(token);
         // 提交给realm进行登入，如果错误他会抛出异常并被捕获
         getSubject(request, response).login(jwtToken);
@@ -61,7 +61,7 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
                 response401(request, response);
             }
         }
-        return true;
+        return super.isAccessAllowed(request, response, mappedValue);
     }
 
     /**

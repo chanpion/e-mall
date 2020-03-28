@@ -22,6 +22,9 @@ public class AuthRealm extends AuthorizingRealm {
     @Resource
     private UserDAO userDAO;
 
+    /**
+     * 鉴权
+     */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
@@ -31,6 +34,9 @@ public class AuthRealm extends AuthorizingRealm {
         return authorizationInfo;
     }
 
+    /**
+     * 密码认证
+     */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         String username = (String) authenticationToken.getPrincipal();

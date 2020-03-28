@@ -12,6 +12,10 @@ import java.util.List;
 @Repository
 public interface MenuDAO {
 
+    Menu insert(Menu menu);
+
+    void deleteById(Long id);
+
     /**
      * 获取全部菜单
      *

@@ -18,7 +18,7 @@ public interface UserDAO {
      * @param user 用户
      * @return 保持的用户
      */
-    User insert(User user);
+    long insert(User user);
 
     /**
      * findByName

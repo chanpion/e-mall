@@ -3,13 +3,20 @@
 
 <mapper namespace="com.chanpion.mall.admin.dao.UserDAO">
 
-    <select id="findByName" resultType="user">
-        SELECT  *
-        FROM  user
-        WHERE username=#{username}
+    <insert id="insert" parameterType="user" keyProperty="id">
+        INSERT INTO
+        user(username,password,createTime)
+        VALUES (#{username},#{password},now())
+    </insert>
+
+    <select id="findByUsername" resultType="user">
+        SELECT *
+        FROM user
+        WHERE username = #{username}
     </select>
 
     <select id="findAll" resultType="user">
-        SELECT * FROM user
+        SELECT *
+        FROM user
     </select>
 </mapper>

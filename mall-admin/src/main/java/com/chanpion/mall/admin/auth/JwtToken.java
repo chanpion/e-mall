@@ -12,4 +12,8 @@ public class JwtToken extends UsernamePasswordToken {
     public JwtToken(String token) {
         this.token = token;
     }
+
+    public JwtToken(String username, String password, boolean rememberMe) {
+        super(username, password, rememberMe);
+    }
 }

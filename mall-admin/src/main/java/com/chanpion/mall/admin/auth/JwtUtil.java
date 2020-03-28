@@ -17,7 +17,9 @@ public class JwtUtil {
     /**
      * 过期时间24小时
      */
-    private static final long EXPRIE_TIME = 24 * 60 * 60 * 1000;
+    private static final long EXPIRE_TIME = 24 * 60 * 60 * 1000;
+
+    public static final String JWT_TOKEN_HEADER = "x-auth-token";
 
     public static boolean verify(String token, String username, String secret) {
         try {
@@ -41,8 +43,8 @@ public class JwtUtil {
         }
     }
 
-    public static String sign(String username, String secret) throws UnsupportedEncodingException {
-        Date date = new Date(System.currentTimeMillis() + EXPRIE_TIME);
+    public static String sign(String username, String secret) {
+        Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
         Algorithm algorithm = Algorithm.HMAC512(secret);
         // 附带username信息
         return JWT.create()
