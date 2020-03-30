@@ -37,7 +37,7 @@ public class JwtUtil {
     public static String getUsername(String token) {
         try {
             DecodedJWT jwt = JWT.decode(token);
-            return jwt.getClaim("username").toString();
+            return jwt.getClaim("username").asString();
         } catch (JWTDecodeException e) {
             return null;
         }
@@ -52,4 +52,9 @@ public class JwtUtil {
                 .withExpiresAt(date)
                 .sign(algorithm);
     }
+
+    public static boolean isTokenExpired(String jwtToken) {
+        return false;
+    }
+
 }

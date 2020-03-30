@@ -1,10 +1,9 @@
 package com.chanpion.mall.admin.service.impl;
 
+import com.chanpion.mall.admin.auth.EncryptUtil;
 import com.chanpion.mall.admin.dao.UserDAO;
 import com.chanpion.mall.admin.entity.User;
 import com.chanpion.mall.admin.service.UserService;
-import org.apache.shiro.crypto.hash.SimpleHash;
-import org.apache.shiro.util.ByteSource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -21,7 +20,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(User user) {
-        String encryptPassword = new SimpleHash("md5", user.getPassword(), ByteSource.Util.bytes(user.getUsername()), 2).toHex();
+        String encryptPassword = EncryptUtil.encrypt(user.getPassword(), user.getUsername());
         user.setPassword(encryptPassword);
         long id = userDAO.insert(user);
         user.setId(id);

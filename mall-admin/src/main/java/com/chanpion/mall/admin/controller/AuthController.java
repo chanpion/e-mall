@@ -1,6 +1,6 @@
 package com.chanpion.mall.admin.controller;
 
-import com.chanpion.mall.admin.auth.JwtToken;
+import com.chanpion.mall.admin.auth.EncryptUtil;
 import com.chanpion.mall.admin.auth.JwtUtil;
 import com.chanpion.mall.admin.model.BaseResponse;
 import org.apache.shiro.SecurityUtils;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -42,8 +43,12 @@ public class AuthController {
         } catch (AuthenticationException e) {
             return new BaseResponse(-1, e.getMessage());
         }
-        String jwtToken = JwtUtil.sign(username, password);
+        String encryptPassword = EncryptUtil.encrypt(password, username);
+        String jwtToken = JwtUtil.sign(username, encryptPassword);
         response.setHeader(JwtUtil.JWT_TOKEN_HEADER, jwtToken);
+        Cookie cookie = new Cookie((JwtUtil.JWT_TOKEN_HEADER), jwtToken);
+        cookie.setPath("/");
+        response.addCookie(cookie);
         return new BaseResponse();
     }
 
