@@ -6,7 +6,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 /**
@@ -53,8 +52,9 @@ public class JwtUtil {
                 .sign(algorithm);
     }
 
-    public static boolean isTokenExpired(String jwtToken) {
-        return false;
+    public static boolean isTokenExpired(String token) {
+        return JWT.decode(token).getExpiresAt().before(new Date());
+
     }
 
 }

@@ -3,7 +3,9 @@ package com.chanpion.mall.admin.auth;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
+import org.apache.shiro.web.util.WebUtils;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -32,7 +34,7 @@ public class JwtFilter extends AuthenticatingFilter {
 
     @Override
     protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) throws Exception {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        HttpServletRequest httpServletRequest =  WebUtils.toHttp(request);
         String jwtToken = httpServletRequest.getHeader(JwtUtil.JWT_TOKEN_HEADER);
         if (StringUtils.isBlank(jwtToken)) {
             Cookie[] cookies = httpServletRequest.getCookies();
@@ -44,7 +46,7 @@ public class JwtFilter extends AuthenticatingFilter {
             }
         }
         if (StringUtils.isNotBlank(jwtToken) && !JwtUtil.isTokenExpired(jwtToken)) {
-            return new JwtToken(jwtToken);
+            return new JwtToken(jwtToken,request.getRemoteHost());
         }
         return null;
     }
@@ -52,6 +54,10 @@ public class JwtFilter extends AuthenticatingFilter {
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
         if (anonymous || isLoginRequest(request, response)) {
+            return true;
+        }
+        Subject subject = getSubject(request, response);
+        if (subject.getPrincipal() != null) {
             return true;
         }
         try {
