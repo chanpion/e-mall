@@ -61,4 +61,9 @@ public class AuthController {
         SecurityUtils.getSubject().logout();
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/toLogin")
+    public BaseResponse toLogin(){
+        return new BaseResponse("to login");
+    }
 }

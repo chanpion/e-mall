@@ -11,6 +11,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author April Chen
@@ -34,7 +35,7 @@ public class JwtFilter extends AuthenticatingFilter {
 
     @Override
     protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) throws Exception {
-        HttpServletRequest httpServletRequest =  WebUtils.toHttp(request);
+        HttpServletRequest httpServletRequest = WebUtils.toHttp(request);
         String jwtToken = httpServletRequest.getHeader(JwtUtil.JWT_TOKEN_HEADER);
         if (StringUtils.isBlank(jwtToken)) {
             Cookie[] cookies = httpServletRequest.getCookies();
@@ -46,7 +47,7 @@ public class JwtFilter extends AuthenticatingFilter {
             }
         }
         if (StringUtils.isNotBlank(jwtToken) && !JwtUtil.isTokenExpired(jwtToken)) {
-            return new JwtToken(jwtToken,request.getRemoteHost());
+            return new JwtToken(jwtToken, request.getRemoteHost());
         }
         return null;
     }
@@ -69,7 +70,11 @@ public class JwtFilter extends AuthenticatingFilter {
 
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
-        super.saveRequestAndRedirectToLogin(request, response);
+        HttpServletResponse httpResponse = WebUtils.toHttp(response);
+        httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        httpResponse.setCharacterEncoding("UTF-8");
+        httpResponse.setContentType("application/json;charset=UTF-8");
+        httpResponse.getWriter().write("{\"errCode\": 401, \"msg\": \"UNAUTHORIZED\"}");
         return false;
     }
 
